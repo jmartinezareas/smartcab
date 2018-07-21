@@ -44,9 +44,10 @@ class LearningAgent(Agent):
         # Update additional class parameters as needed
         # If 'testing' is True, set epsilon and alpha to 0
         if testing != True:
-           
+          #self.epsilon -= 0.05
           self.epsilon = math.cos(self.a*self.trial)
           self.trial += 1
+          
         else:
            self.epsilon = 0
            self.alpha = 0
@@ -151,9 +152,8 @@ class LearningAgent(Agent):
         # When learning, implement the value iteration update rule
         #   Use only the learning rate 'alpha' (do not use the discount factor 'gamma')
         
-        #self.alpha = 0.8 if reward < -40 else 0.5
-        self.Q[state][action] += self.alpha*reward
-
+        if self.learning:
+           self.Q[state][action] = (1 - self.alpha)*self.Q[state][action] + self.alpha*reward
         return
 
 
@@ -204,7 +204,7 @@ def run():
     #   display      - set to False to disable the GUI if PyGame is enabled
     #   log_metrics  - set to True to log trial and simulation results to /logs
     #   optimized    - set to True to change the default log file name
-    sim = Simulator(env, update_delay = 0.0001, log_metrics = True, optimized = True, display = False)
+    sim = Simulator(env, update_delay = 0.0001, log_metrics = True, optimized = True, display = True)
     
     ##############
     # Run the simulator
